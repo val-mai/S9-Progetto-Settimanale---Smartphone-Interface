@@ -1,0 +1,44 @@
+:root {
+    --bianco : #fcfcfe;
+    --nero : #222222;
+}
+* {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #1ea5ea;
+}
+.smartphone {
+    background-color: #222222f7;
+    height: 80vh;
+    aspect-ratio: 9/16;
+    margin: 3rem auto;
+    border-radius: 30px;
+    position: relative;
+}
+.topinfo {
+    padding: 15px 35px;
+    color: var(--bianco);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+}
+.phoneBody {
+    text-align: center;
+    color: var(--bianco);
+}
+.info1 {
+    margin: 1rem;
+}
+.phoneBody h2{
+    margin-top: 30%;
+}
+.info2{
+    margin-top: 2em;
+}
+.info2 h4 {
+    margin: 0.5rem;
+}
