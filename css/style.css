@@ -39,6 +39,47 @@ body {
 .info2{
     margin-top: 2em;
 }
+.info2 i {
+    color: #c62b2b;
+    cursor: pointer;
+    font-size: 24px;
+}
+.reset{
+    margin-top: 1rem;
+}
 .info2 h4 {
     margin: 0.5rem;
+}
+.controls-bottom {
+    display: flex;
+    width: 100%;
+    position: absolute;
+    bottom: 10%;
+    justify-content: space-around;
+}
+.controls-bottom img {
+    width: 90px;
+    cursor: pointer;
+}
+.destinatario {
+    display: flex;
+    flex-direction: column;
+    margin-top: 25%;
+    justify-content: center;
+    align-items: center;
+    color: var(--bianco);
+}
+.destinatario h3 {
+    font-size: 1.6em;
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+.destinatario p {
+    font-size: 1.1em;
+}
+.destinatario img {
+    width: 150px;
+    border-radius: 50%;
+    border: 3px solid var(--bianco);
+    margin-bottom: 2rem;
 }
