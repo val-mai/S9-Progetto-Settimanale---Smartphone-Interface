@@ -1,17 +1,23 @@
 "use strict";
 let phoneBody = document.querySelector('.phoneBody');
+clock();
 changeUser();
-class User {
-    constructor(carica, numeroChiamate, durataTotale) {
-        this.carica = carica,
-            this.numeroChiamate = numeroChiamate;
+const tariffa = 0.2;
+class SmartphoneUser {
+    constructor(carica, numeroChiamate, durataTotale, bankCount) {
+        this.carica = carica;
+        this.numeroChiamate = numeroChiamate;
         this.durataTotale = durataTotale;
+        this._bankCount = bankCount;
+    }
+    get bankCount() {
+        return this._bankCount;
     }
     ricarica(unaRicarica) {
         this.carica += unaRicarica;
     }
     chiamata(durata) {
-        this.carica -= (Math.ceil(durata / 60) * 0.2); //tariffa di 20 cent al minuto
+        this.carica -= (Math.ceil(durata / 60) * tariffa);
         this.numeroChiamate++;
         this.durataTotale += durata;
     }
@@ -33,9 +39,9 @@ class User {
     }
 }
 ;
-let user1 = new User(15, 0, 0);
-let user2 = new User(10, 0, 0);
-let user3 = new User(20, 0, 0);
+let user1 = new SmartphoneUser(10, 0, 0, '8623 7919 3181 7854');
+let user2 = new SmartphoneUser(1, 0, 0, '5349 3879 5594 6768');
+let user3 = new SmartphoneUser(20, 0, 0, '7937 6522 5718 4610');
 let utenti = [user1, user2, user3];
 let i;
 i = 0;
@@ -46,7 +52,7 @@ function initialize() {
     let h2 = document.createElement('h2');
     h2.innerHTML = 'Credito residuo';
     let credito = document.createElement('p');
-    credito.innerHTML = `${utenti[i].numero404().toFixed(2)}`;
+    credito.innerHTML = `${utenti[i].numero404().toFixed(2)}€`;
     let info2 = document.createElement('div');
     info2.classList.add('info2');
     let h4_1 = document.createElement('h4');
@@ -91,47 +97,64 @@ function initialize() {
 }
 function startCall() {
     phoneBody.innerHTML = '';
-    let destinatario = document.createElement('div');
-    destinatario.classList.add('destinatario');
-    let img = document.createElement('img');
-    img.src = 'img/male.jpg';
-    let h3 = document.createElement('h3');
-    h3.innerHTML = 'John Doe';
-    let timer = document.createElement('p');
-    let controls = document.createElement('div');
-    controls.classList.add('controls-bottom');
-    let close = document.createElement('img');
-    close.src = 'img/red.svg';
-    phoneBody.appendChild(destinatario);
-    destinatario.appendChild(img);
-    destinatario.appendChild(h3);
-    destinatario.appendChild(timer);
-    phoneBody.appendChild(controls);
-    controls.appendChild(close);
-    let s = 0;
-    let m = 0;
-    let startTimer = setInterval(() => {
-        s++;
-        if (s === 60) {
-            s = 0;
-            m++;
-            console.log(s);
+    if (utenti[i].numero404() < tariffa) {
+        alert('Non hai abbastanza credito! Effettua una ricarica');
+        addCredit();
+    }
+    else {
+        let destinatario = document.createElement('div');
+        destinatario.classList.add('destinatario');
+        let img = document.createElement('img');
+        img.src = 'img/male.jpg';
+        let h3 = document.createElement('h3');
+        h3.innerHTML = 'John Doe';
+        let timer = document.createElement('p');
+        let controls = document.createElement('div');
+        controls.classList.add('controls-bottom');
+        let close = document.createElement('img');
+        close.src = 'img/red.svg';
+        phoneBody.appendChild(destinatario);
+        destinatario.appendChild(img);
+        destinatario.appendChild(h3);
+        destinatario.appendChild(timer);
+        phoneBody.appendChild(controls);
+        controls.appendChild(close);
+        let creditLimit = Math.floor((utenti[i].numero404()) / tariffa);
+        let s = 0;
+        let m = 0;
+        let startTimer = setInterval(() => {
+            s++;
+            if (s === 60) {
+                s = 0;
+                m++;
+                if (m === creditLimit) {
+                    alert('Credito Esaurito');
+                    clearInterval(startTimer);
+                    timer.innerHTML = '';
+                    let durata = s + (m * 60);
+                    utenti[i].chiamata(durata);
+                    initialize();
+                }
+            }
+            if (s < 10) {
+                timer.innerHTML = `${m}:0${s}`;
+            }
+            else {
+                timer.innerHTML = `${m}:${s}`;
+            }
+        }, 1000);
+        close.addEventListener('click', closeCall);
+        function closeCall() {
+            clearInterval(startTimer);
+            timer.innerHTML = '';
+            let durata = s + (m * 60);
+            utenti[i].chiamata(durata);
+            initialize();
         }
-        if (s < 10) {
-            timer.innerHTML = `${m}:0${s}`;
-        }
-        else {
-            timer.innerHTML = `${m}:${s}`;
-        }
-    }, 1000);
-    close.addEventListener('click', () => {
-        clearInterval(startTimer);
-        timer.innerHTML = '';
-        let durata = s + (m * 60);
-        utenti[i].chiamata(durata);
-        initialize();
-    });
+    }
+    ;
 }
+;
 function changeUser() {
     phoneBody.innerHTML = '';
     let info1 = document.createElement('div');
@@ -180,6 +203,7 @@ function changeUser() {
         initialize();
     });
 }
+;
 function addCredit() {
     phoneBody.innerHTML = '';
     let back = document.createElement('i');
@@ -194,7 +218,7 @@ function addCredit() {
     h3.classList.add('creditname');
     h3.innerHTML = 'EpicPay';
     let p = document.createElement('p');
-    p.innerHTML = '000 0000 0000 000'; //da modificare se rubrica
+    p.innerHTML = utenti[i].bankCount;
     let ricariche = document.createElement('div');
     ricariche.classList.add('ricariche');
     let ric5 = document.createElement('div');
@@ -242,3 +266,19 @@ function addCredit() {
         initialize();
     });
 }
+function clock() {
+    setInterval(() => {
+        let now = new Date();
+        let hour = now.getHours();
+        let minute = now.getMinutes();
+        if (minute < 10) {
+            minute = '0' + minute;
+        }
+        if (hour < 10) {
+            hour = '0' + hour;
+        }
+        const clock = document.querySelector('.clock p');
+        clock.innerHTML = hour + ':' + minute;
+    }, 1000);
+}
+;
