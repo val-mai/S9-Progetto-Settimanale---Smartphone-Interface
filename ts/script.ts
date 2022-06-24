@@ -2,29 +2,29 @@ let phoneBody = document.querySelector('.phoneBody');
 changeUser();
 
 class User {
-    
-    carica:number;
+
+    carica: number;
     numeroChiamate: number;
     durataTotale: number;
-    
-        constructor(carica:number, numeroChiamate: number, durataTotale:number){ 
-            this.carica = carica,
+
+    constructor(carica: number, numeroChiamate: number, durataTotale: number) {
+        this.carica = carica,
             this.numeroChiamate = numeroChiamate;
-            this.durataTotale = durataTotale;
-        }
+        this.durataTotale = durataTotale;
+    }
 
-    ricarica(unaRicarica:number): void {
+    ricarica(unaRicarica: number): void {
         this.carica += unaRicarica;
-    } 
+    }
 
-    chiamata(durata: number): void{
-        this.carica -= (Math.ceil(durata/60) * 0.2); //tariffa di 20 cent al minuto
-        this.numeroChiamate ++;
-        this.durataTotale += durata;          
-    } 
+    chiamata(durata: number): void {
+        this.carica -= (Math.ceil(durata / 60) * 0.2); //tariffa di 20 cent al minuto
+        this.numeroChiamate++;
+        this.durataTotale += durata;
+    }
 
     numero404(): number {
-        return this.carica; 
+        return this.carica;
     }
 
     getNumeroChiamate(): number {
@@ -33,8 +33,8 @@ class User {
 
     getDurataTotale(): string {
         let totale = this.durataTotale;
-        let minuti = Math.floor(totale/60);
-        let secondi = totale%60;
+        let minuti = Math.floor(totale / 60);
+        let secondi = totale % 60;
         return `${minuti} m ${secondi} s`;
 
     }
@@ -46,16 +46,16 @@ class User {
 
 };
 
-let user1 = new User(15,0,0);
-let user2 = new User(10,0,0);
-let user3 = new User(20,0,0);
+let user1 = new User(15, 0, 0);
+let user2 = new User(10, 0, 0);
+let user3 = new User(20, 0, 0);
 
-let utenti:User[] = [user1,user2,user3];
-let i:number;
-i=0;
+let utenti: User[] = [user1, user2, user3];
+let i: number;
+i = 0;
 
 function initialize() {
-    phoneBody!.innerHTML ='';
+    phoneBody!.innerHTML = '';
     let info1 = document.createElement('div');
     info1.classList.add('info1');
     let h2 = document.createElement('h2');
@@ -74,7 +74,7 @@ function initialize() {
     durataTot.innerHTML = utenti[i].getDurataTotale();
     let reset = document.createElement('div');
     reset.classList.add('reset');
-    reset.innerHTML =  '<i class="bi bi-x-circle-fill"></i>';
+    reset.innerHTML = '<i class="bi bi-x-circle-fill"></i>';
     let controls = document.createElement('div');
     controls.classList.add('controls-bottom');
     let call = document.createElement('img');
@@ -98,18 +98,19 @@ function initialize() {
     controls.appendChild(utenze);
     controls.appendChild(ricarica);
 
-    reset.addEventListener('click', ()=>{
-        user1.azzeraChiamate();
+    reset.addEventListener('click', () => {
+        utenti[i].azzeraChiamate();
         initialize();
     });
     call.addEventListener('click', startCall);
     utenze.addEventListener('click', changeUser);
+    ricarica.addEventListener('click', addCredit);
 
 }
 
 function startCall() {
     phoneBody!.innerHTML = '';
-    
+
     let destinatario = document.createElement('div');
     destinatario.classList.add('destinatario');
     let img = document.createElement('img');
@@ -133,7 +134,7 @@ function startCall() {
     let startTimer = setInterval(() => {
         s++;
         if (s === 60) {
-            s=0;
+            s = 0;
             m++;
             console.log(s);
         }
@@ -147,14 +148,14 @@ function startCall() {
     close.addEventListener('click', () => {
         clearInterval(startTimer);
         timer!.innerHTML = '';
-        let durata = s + (m*60);
+        let durata = s + (m * 60);
         utenti[i].chiamata(durata);
         initialize();
     });
 }
 
-function changeUser(){
-    phoneBody!.innerHTML ='';
+function changeUser() {
+    phoneBody!.innerHTML = '';
     let info1 = document.createElement('div');
     info1.classList.add('info1');
     let h2 = document.createElement('h2');
@@ -165,17 +166,17 @@ function changeUser(){
     let h4_1 = document.createElement('h4');
     h4_1.innerHTML = 'Famiglia';
     let fami = document.createElement('i');
-    fami.className='bi bi-person-heart';
+    fami.className = 'bi bi-person-heart';
     let business = document.createElement('div');
     let h4_2 = document.createElement('h4');
     h4_2.innerHTML = 'Business';
     let busi = document.createElement('i');
-    busi.className='bi bi-briefcase-fill';
+    busi.className = 'bi bi-briefcase-fill';
     let amici = document.createElement('div');
     let h4_3 = document.createElement('h4');
     h4_3.innerHTML = 'Amici';
     let fri = document.createElement('i');
-    fri.className='bi bi-music-note-list';
+    fri.className = 'bi bi-music-note-list';
 
     phoneBody!.appendChild(info1);
     info1.appendChild(h2);
@@ -200,6 +201,71 @@ function changeUser(){
     });
     amici.addEventListener('click', () => {
         i = 2;
+        initialize();
+    });
+}
+
+function addCredit() {
+    phoneBody!.innerHTML = '';
+    let back = document.createElement('i');
+    back.className = 'bi bi-arrow-left-circle-fill home';
+    let h5 = document.createElement('h5');
+    h5.innerHTML = 'Back';
+    let bottom = document.createElement('div');
+    bottom.classList.add('ricarica-bottom');
+    let creditcard = document.createElement('div');
+    creditcard.classList.add('creditcard');
+    let h3 = document.createElement('h3');
+    h3.classList.add('creditname');
+    h3.innerHTML = 'EpicPay';
+    let p = document.createElement('p');
+    p.innerHTML = '000 0000 0000 000'; //da modificare se rubrica
+    let ricariche = document.createElement('div');
+    ricariche.classList.add('ricariche');
+    let ric5 = document.createElement('div');
+    let p5 = document.createElement('p');
+    p5.innerHTML = '5€';
+    let ric10 = document.createElement('div');
+    let p10 = document.createElement('p');
+    p10.innerHTML = '10€';
+    let ric20 = document.createElement('div');
+    let p20 = document.createElement('p');
+    p20.innerHTML = '20€';
+    let ric50 = document.createElement('div');
+    let p50 = document.createElement('p');
+    p50.innerHTML = '50€';
+
+    phoneBody!.appendChild(back);
+    phoneBody!.appendChild(h5);
+    phoneBody!.appendChild(bottom);
+    bottom.appendChild(creditcard);
+    creditcard.appendChild(h3);
+    creditcard.appendChild(p);
+    bottom.appendChild(ricariche);
+    ricariche.appendChild(ric5);
+    ric5.appendChild(p5);
+    ricariche.appendChild(ric10);
+    ric10.appendChild(p10);
+    ricariche.appendChild(ric20);
+    ric20.appendChild(p20);
+    ricariche.appendChild(ric50);
+    ric50.appendChild(p50);
+
+    back.addEventListener('click', initialize);
+    ric5.addEventListener('click', () => {
+        utenti[i].ricarica(5);
+        initialize();
+    });
+    ric10.addEventListener('click', () => {
+        utenti[i].ricarica(10);
+        initialize();
+    });
+    ric20.addEventListener('click', () => {
+        utenti[i].ricarica(20);
+        initialize();
+    });
+    ric50.addEventListener('click', () => {
+        utenti[i].ricarica(50);
         initialize();
     });
 }

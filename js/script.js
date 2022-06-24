@@ -82,11 +82,12 @@ function initialize() {
     controls.appendChild(utenze);
     controls.appendChild(ricarica);
     reset.addEventListener('click', () => {
-        user1.azzeraChiamate();
+        utenti[i].azzeraChiamate();
         initialize();
     });
     call.addEventListener('click', startCall);
     utenze.addEventListener('click', changeUser);
+    ricarica.addEventListener('click', addCredit);
 }
 function startCall() {
     phoneBody.innerHTML = '';
@@ -176,6 +177,68 @@ function changeUser() {
     });
     amici.addEventListener('click', () => {
         i = 2;
+        initialize();
+    });
+}
+function addCredit() {
+    phoneBody.innerHTML = '';
+    let back = document.createElement('i');
+    back.className = 'bi bi-arrow-left-circle-fill home';
+    let h5 = document.createElement('h5');
+    h5.innerHTML = 'Back';
+    let bottom = document.createElement('div');
+    bottom.classList.add('ricarica-bottom');
+    let creditcard = document.createElement('div');
+    creditcard.classList.add('creditcard');
+    let h3 = document.createElement('h3');
+    h3.classList.add('creditname');
+    h3.innerHTML = 'EpicPay';
+    let p = document.createElement('p');
+    p.innerHTML = '000 0000 0000 000'; //da modificare se rubrica
+    let ricariche = document.createElement('div');
+    ricariche.classList.add('ricariche');
+    let ric5 = document.createElement('div');
+    let p5 = document.createElement('p');
+    p5.innerHTML = '5€';
+    let ric10 = document.createElement('div');
+    let p10 = document.createElement('p');
+    p10.innerHTML = '10€';
+    let ric20 = document.createElement('div');
+    let p20 = document.createElement('p');
+    p20.innerHTML = '20€';
+    let ric50 = document.createElement('div');
+    let p50 = document.createElement('p');
+    p50.innerHTML = '50€';
+    phoneBody.appendChild(back);
+    phoneBody.appendChild(h5);
+    phoneBody.appendChild(bottom);
+    bottom.appendChild(creditcard);
+    creditcard.appendChild(h3);
+    creditcard.appendChild(p);
+    bottom.appendChild(ricariche);
+    ricariche.appendChild(ric5);
+    ric5.appendChild(p5);
+    ricariche.appendChild(ric10);
+    ric10.appendChild(p10);
+    ricariche.appendChild(ric20);
+    ric20.appendChild(p20);
+    ricariche.appendChild(ric50);
+    ric50.appendChild(p50);
+    back.addEventListener('click', initialize);
+    ric5.addEventListener('click', () => {
+        utenti[i].ricarica(5);
+        initialize();
+    });
+    ric10.addEventListener('click', () => {
+        utenti[i].ricarica(10);
+        initialize();
+    });
+    ric20.addEventListener('click', () => {
+        utenti[i].ricarica(20);
+        initialize();
+    });
+    ric50.addEventListener('click', () => {
+        utenti[i].ricarica(50);
         initialize();
     });
 }

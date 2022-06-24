@@ -105,3 +105,61 @@ body {
 .utenze i {
     color: #1ea5ea;
 }
+.ricarica-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 70%;
+    border-radius: 30px;
+    background-color: var(--bianco);
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+}
+.creditcard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 35%;
+    border-radius: 15px;
+    background-color: #253980;
+    position: absolute;
+    top: -15%;
+}
+.titleCarica {
+    font-size: 16px;
+    margin-top: 2rem;
+    font-weight: 400;
+}
+.creditname {
+    font-family: Verdana, sans-serif;
+    font-size: 26px;
+    font-style: italic;
+}
+.ricariche {
+    position: absolute;
+    bottom: 15%;
+    gap: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.ricariche div {
+    color: var(--bianco);
+    background-color: #253980;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    z-index: 2;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.home {
+    font-size: 24px;
+    cursor: pointer;
+}
