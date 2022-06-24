@@ -1,4 +1,5 @@
 let phoneBody = document.querySelector('.phoneBody');
+changeUser();
 
 class User {
     
@@ -49,24 +50,28 @@ let user1 = new User(15,0,0);
 let user2 = new User(10,0,0);
 let user3 = new User(20,0,0);
 
+let utenti:User[] = [user1,user2,user3];
+let i:number;
+i=0;
+
 function initialize() {
     phoneBody!.innerHTML ='';
     let info1 = document.createElement('div');
-    info1.classList.add('inf01');
+    info1.classList.add('info1');
     let h2 = document.createElement('h2');
     h2.innerHTML = 'Credito residuo'
     let credito = document.createElement('p');
-    credito.innerHTML = user1.numero404().toFixed(2);
+    credito.innerHTML = `${utenti[i].numero404().toFixed(2)}`;
     let info2 = document.createElement('div');
     info2.classList.add('info2');
     let h4_1 = document.createElement('h4');
     h4_1.innerHTML = 'Chiamate effettuate';
     let chiamate = document.createElement('p');
-    chiamate.innerHTML = `${user1.getNumeroChiamate()}`;
+    chiamate.innerHTML = `${utenti[i].getNumeroChiamate()}`;
     let h4_2 = document.createElement('h4');
     h4_2.innerHTML = 'Durata totale delle chiamate';
     let durataTot = document.createElement('p');
-    durataTot.innerHTML = user1.getDurataTotale();
+    durataTot.innerHTML = utenti[i].getDurataTotale();
     let reset = document.createElement('div');
     reset.classList.add('reset');
     reset.innerHTML =  '<i class="bi bi-x-circle-fill"></i>';
@@ -98,10 +103,9 @@ function initialize() {
         initialize();
     });
     call.addEventListener('click', startCall);
+    utenze.addEventListener('click', changeUser);
 
 }
-
-initialize();
 
 function startCall() {
     phoneBody!.innerHTML = '';
@@ -144,7 +148,58 @@ function startCall() {
         clearInterval(startTimer);
         timer!.innerHTML = '';
         let durata = s + (m*60);
-        user1.chiamata(durata);
+        utenti[i].chiamata(durata);
+        initialize();
+    });
+}
+
+function changeUser(){
+    phoneBody!.innerHTML ='';
+    let info1 = document.createElement('div');
+    info1.classList.add('info1');
+    let h2 = document.createElement('h2');
+    h2.innerHTML = 'Seleziona utenza'
+    let utenze = document.createElement('div');
+    utenze.classList.add('utenze');
+    let famiglia = document.createElement('div');
+    let h4_1 = document.createElement('h4');
+    h4_1.innerHTML = 'Famiglia';
+    let fami = document.createElement('i');
+    fami.className='bi bi-person-heart';
+    let business = document.createElement('div');
+    let h4_2 = document.createElement('h4');
+    h4_2.innerHTML = 'Business';
+    let busi = document.createElement('i');
+    busi.className='bi bi-briefcase-fill';
+    let amici = document.createElement('div');
+    let h4_3 = document.createElement('h4');
+    h4_3.innerHTML = 'Amici';
+    let fri = document.createElement('i');
+    fri.className='bi bi-music-note-list';
+
+    phoneBody!.appendChild(info1);
+    info1.appendChild(h2);
+    phoneBody!.appendChild(utenze);
+    utenze.appendChild(famiglia);
+    famiglia.appendChild(h4_1);
+    famiglia.appendChild(fami);
+    utenze.appendChild(business);
+    business.appendChild(h4_2);
+    business.appendChild(busi);
+    utenze.appendChild(amici);
+    amici.appendChild(h4_3);
+    amici.appendChild(fri);
+
+    famiglia.addEventListener('click', () => {
+        i = 0;
+        initialize();
+    });
+    business.addEventListener('click', () => {
+        i = 1;
+        initialize();
+    });
+    amici.addEventListener('click', () => {
+        i = 2;
         initialize();
     });
 }

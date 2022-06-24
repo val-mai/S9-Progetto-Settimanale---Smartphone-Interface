@@ -83,3 +83,25 @@ body {
     border: 3px solid var(--bianco);
     margin-bottom: 2rem;
 }
+.utenze div{
+    margin: 20px auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 24px;
+    cursor: pointer;
+    width: 70%;
+    color: var(--nero);
+    padding: 10px;
+    border-radius: 25px;
+    background-color: #fcfcfe;
+    text-align: start;
+}
+.utenze h4 {
+    margin:0;
+    padding: 2px;
+    min-width: 35%;
+}
+.utenze i {
+    color: #1ea5ea;
+}
