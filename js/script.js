@@ -4,10 +4,11 @@ clock();
 changeUser();
 const tariffa = 0.2;
 class SmartphoneUser {
-    constructor(carica, numeroChiamate, durataTotale, bankCount) {
+    constructor(carica, numeroChiamate, durataTotale, rubrica, bankCount) {
         this.carica = carica;
         this.numeroChiamate = numeroChiamate;
         this.durataTotale = durataTotale;
+        this.rubrica = rubrica;
         this._bankCount = bankCount;
     }
     get bankCount() {
@@ -39,12 +40,50 @@ class SmartphoneUser {
     }
 }
 ;
-let user1 = new SmartphoneUser(10, 0, 0, '8623 7919 3181 7854');
-let user2 = new SmartphoneUser(1, 0, 0, '5349 3879 5594 6768');
-let user3 = new SmartphoneUser(20, 0, 0, '7937 6522 5718 4610');
+class Contacts {
+    constructor(name, imgURL, utenza) {
+        this._name = name;
+        this._imgURL = imgURL;
+        this._utenza = utenza;
+    }
+    get name() {
+        return this._name;
+    }
+    get imgURL() {
+        return this._imgURL;
+    }
+    get utenza() {
+        return this._utenza;
+    }
+}
+;
+/* Alcuni contatti di esempio */
+let contatto1 = new Contacts('Mario Rossi', 'img/mario_rossi.jpg', 'Amici');
+let contatto2 = new Contacts('Antonio Bianchi', 'img/antonio_bianchi.jpg', 'Amici');
+let contatto3 = new Contacts('Martina Bianchi', 'img/martina.jpg', 'Amici');
+let contatto4 = new Contacts('Epicode', 'img/epicode.jpg', 'Business');
+let contatto5 = new Contacts('Amministrazione', 'img/mario_rossi.jpg', 'Business');
+let contatto6 = new Contacts('Commercialista', 'img/commercialista.jpg', 'Business');
+let contatto7 = new Contacts('Mamma', 'img/martina.jpg', 'Famiglia');
+let contatto8 = new Contacts('Miriam', 'img/miriam.jpg', 'Famiglia');
+let contatto9 = new Contacts('Papà', 'img/papa.jpg', 'Famiglia');
+let contatto10 = new Contacts('Francesco Sette', 'img/commercialista.jpg', 'Amici');
+let contatto11 = new Contacts('Giovanna Mazzini', 'img/miriam.jpg', 'Amici');
+let contatto12 = new Contacts('Zio Antonio', 'img/commercialista.jpg', 'Famiglia');
+let contatto13 = new Contacts('Fratello', 'img/antonio_bianchi.jpg', 'Famiglia');
+let contatto14 = new Contacts('Sede Centrale', 'img/epicode.jpg', 'Business');
+let contatto15 = new Contacts('Segretaria', 'img/martina.jpg', 'Business');
+let rubrica = [contatto1, contatto2, contatto3, contatto4, contatto5, contatto6, contatto7, contatto8,
+    contatto9, contatto10, contatto11, contatto12, contatto13, contatto14, contatto15];
+let rubrica_fam = rubrica.filter(ele => ele.utenza === 'Famiglia');
+let rubrica_am = rubrica.filter(ele => ele.utenza === 'Amici');
+let rubrica_bus = rubrica.filter(ele => ele.utenza === 'Business');
+let user1 = new SmartphoneUser(10, 0, 0, rubrica_fam, '8623 7919 3181 7854');
+let user2 = new SmartphoneUser(1, 0, 0, rubrica_bus, '5349 3879 5594 6768');
+let user3 = new SmartphoneUser(20, 0, 0, rubrica_am, '7937 6522 5718 4610');
 let utenti = [user1, user2, user3];
 let i;
-i = 0;
+let c;
 function initialize() {
     phoneBody.innerHTML = '';
     let info1 = document.createElement('div');
@@ -91,9 +130,39 @@ function initialize() {
         utenti[i].azzeraChiamate();
         initialize();
     });
-    call.addEventListener('click', startCall);
+    call.addEventListener('click', apriRubrica);
     utenze.addEventListener('click', changeUser);
     ricarica.addEventListener('click', addCredit);
+}
+function apriRubrica() {
+    phoneBody.innerHTML = '';
+    let h3 = document.createElement('h3');
+    h3.classList.add('contact-title');
+    h3.innerHTML = 'Contatti';
+    phoneBody.appendChild(h3);
+    utenti[i].rubrica.forEach((contatto, i) => {
+        let container = document.createElement('div');
+        container.classList.add('contact');
+        let img = document.createElement('img');
+        img.src = contatto.imgURL;
+        let nomediv = document.createElement('div');
+        let nome = document.createElement('h3');
+        nome.innerHTML = contatto.name;
+        let p = document.createElement('p');
+        p.innerHTML = contatto.utenza;
+        let ico = document.createElement('i');
+        ico.className = "bi bi-telephone-fill";
+        ico.addEventListener('click', () => {
+            c = i;
+            startCall();
+        });
+        phoneBody.appendChild(container);
+        container.appendChild(img);
+        container.appendChild(nomediv);
+        nomediv.appendChild(nome);
+        nomediv.appendChild(p);
+        container.appendChild(ico);
+    });
 }
 function startCall() {
     phoneBody.innerHTML = '';
@@ -102,12 +171,13 @@ function startCall() {
         addCredit();
     }
     else {
+        console.log(c);
         let destinatario = document.createElement('div');
         destinatario.classList.add('destinatario');
         let img = document.createElement('img');
-        img.src = 'img/male.jpg';
+        img.src = utenti[i].rubrica[c].imgURL;
         let h3 = document.createElement('h3');
-        h3.innerHTML = 'John Doe';
+        h3.innerHTML = utenti[i].rubrica[c].name;
         let timer = document.createElement('p');
         let controls = document.createElement('div');
         controls.classList.add('controls-bottom');
