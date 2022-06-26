@@ -4,6 +4,8 @@ changeUser();
 
 const tariffa: number = 0.2;
 
+// Classe Smartphone
+
 class SmartphoneUser {
 
     carica: number;
@@ -47,7 +49,6 @@ class SmartphoneUser {
         let minuti = Math.floor(totale / 60);
         let secondi = totale % 60;
         return `${minuti} m ${secondi} s`;
-
     }
 
     azzeraChiamate(): void {
@@ -55,6 +56,8 @@ class SmartphoneUser {
         this.durataTotale = 0;
     }
 };
+
+// Rubrica
 
 class Contacts {
     private _name:string;
@@ -82,10 +85,10 @@ class Contacts {
 
 /* Alcuni contatti di esempio */
 let contatto1 = new Contacts ('Mario Rossi', 'img/mario_rossi.jpg','Amici');
-let contatto2 = new Contacts ('Antonio Bianchi', 'img/antonio_bianchi.jpg','Amici');
+let contatto2 = new Contacts ('Antonio Verdi', 'img/antonio_bianchi.jpg','Amici');
 let contatto3 = new Contacts ('Martina Bianchi', 'img/martina.jpg','Amici');
-let contatto4 = new Contacts ('Epicode', 'img/epicode.jpg','Business');
-let contatto5 = new Contacts ('Amministrazione', 'img/mario_rossi.jpg','Business');
+let contatto4 = new Contacts ('Ufficio Roma', 'img/epicode.jpg','Business');
+let contatto5 = new Contacts ('Resp Marketing', 'img/mario_rossi.jpg','Business');
 let contatto6 = new Contacts ('Commercialista', 'img/commercialista.jpg','Business');
 let contatto7 = new Contacts ('Mamma', 'img/martina.jpg','Famiglia');
 let contatto8 = new Contacts ('Miriam', 'img/miriam.jpg','Famiglia');
@@ -94,9 +97,8 @@ let contatto10 = new Contacts ('Francesco Sette', 'img/commercialista.jpg','Amic
 let contatto11 = new Contacts ('Giovanna Mazzini', 'img/miriam.jpg','Amici');
 let contatto12 = new Contacts ('Zio Antonio', 'img/commercialista.jpg','Famiglia');
 let contatto13 = new Contacts ('Fratello', 'img/antonio_bianchi.jpg','Famiglia');
-let contatto14 = new Contacts ('Sede Centrale', 'img/epicode.jpg','Business');
-let contatto15 = new Contacts ('Segretaria', 'img/martina.jpg','Business');
-
+let contatto14 = new Contacts ('Ufficio Milano', 'img/epicode.jpg','Business');
+let contatto15 = new Contacts ('Resp Comunicazione', 'img/martina.jpg','Business');
 
 let rubrica: Contacts[] = [contatto1,contatto2,contatto3,contatto4,contatto5,contatto6,contatto7,contatto8,
     contatto9,contatto10,contatto11,contatto12,contatto13,contatto14,contatto15];
@@ -104,6 +106,8 @@ let rubrica: Contacts[] = [contatto1,contatto2,contatto3,contatto4,contatto5,con
 let rubrica_fam = rubrica.filter(ele => ele.utenza === 'Famiglia');
 let rubrica_am = rubrica.filter(ele => ele.utenza === 'Amici');
 let rubrica_bus = rubrica.filter(ele => ele.utenza === 'Business');
+
+// Inizializzazione Utenti
 
 let user1 = new SmartphoneUser(10, 0, 0, rubrica_fam, '8623 7919 3181 7854');
 let user2 = new SmartphoneUser(1, 0, 0,rubrica_bus ,'5349 3879 5594 6768');
@@ -143,36 +147,29 @@ function initialize() {
     let ricarica = document.createElement('img');
     ricarica.src = 'img/credit.svg'
 
-    phoneBody!.appendChild(info1);
-    info1.appendChild(h2);
-    info1.appendChild(credito);
-    phoneBody!.appendChild(info2);
-    info2.appendChild(h4_1);
-    info2.appendChild(chiamate);
-    info2.appendChild(h4_2);
-    info2.appendChild(durataTot);
-    info2.appendChild(reset);
-    phoneBody!.appendChild(controls);
-    controls.appendChild(call);
-    controls.appendChild(utenze);
-    controls.appendChild(ricarica);
+    phoneBody!.append(info1, info2, controls);
+    info1.append(h2, credito);
+    info2.append(h4_1, chiamate, h4_2, durataTot, reset);
+    controls.append(call, utenze, ricarica);
 
     reset.addEventListener('click', () => {
         utenti[i].azzeraChiamate();
         initialize();
     });
+
     call.addEventListener('click', apriRubrica);
     utenze.addEventListener('click', changeUser);
     ricarica.addEventListener('click', addCredit);
-
 }
 
 function apriRubrica() {
     phoneBody!.innerHTML = '';
+    let back = document.createElement('i');
+    back.className = 'bi bi-arrow-left-circle-fill home';
     let h3 = document.createElement('h3');
     h3.classList.add('contact-title');
     h3.innerHTML = 'Contatti';
-    phoneBody!.appendChild(h3);
+    phoneBody!.append(h3);
     utenti[i].rubrica.forEach((contatto,i) => {
         let container = document.createElement('div');
         container.classList.add('contact');
@@ -191,14 +188,12 @@ function apriRubrica() {
             startCall();
         })
 
-        phoneBody!.appendChild(container);
-        container.appendChild(img);
-        container.appendChild(nomediv);
-        nomediv.appendChild(nome);
-        nomediv.appendChild(p);
-        container.appendChild(ico);
+        back.addEventListener('click', initialize);
+        phoneBody!.append(container, back);
+        container.append(img, nomediv, ico);
+        nomediv.append(nome, p);
     })
-}
+};
 
 function startCall() {
     phoneBody!.innerHTML = '';
@@ -218,14 +213,11 @@ function startCall() {
         controls.classList.add('controls-bottom');
         let close = document.createElement('img');
         close.src = 'img/red.svg';
-        phoneBody!.appendChild(destinatario);
-        destinatario.appendChild(img);
-        destinatario.appendChild(h3);
-        destinatario.appendChild(timer);
-        phoneBody!.appendChild(controls);
+        phoneBody!.append(destinatario, controls);
+        destinatario.append(img, h3, timer);
         controls.appendChild(close);
 
-        let creditLimit: number = Math.floor((utenti[i].numero404()) / tariffa);
+        let creditLimit: number = Math.floor((utenti[i].numero404()) / tariffa); //controllo credito residuo
 
         let s: any = 0;
         let m: any = 0;
@@ -286,18 +278,12 @@ function changeUser() {
     let fri = document.createElement('i');
     fri.className = 'bi bi-music-note-list';
 
-    phoneBody!.appendChild(info1);
+    phoneBody!.append(info1, utenze);
     info1.appendChild(h2);
-    phoneBody!.appendChild(utenze);
-    utenze.appendChild(famiglia);
-    famiglia.appendChild(h4_1);
-    famiglia.appendChild(fami);
-    utenze.appendChild(business);
-    business.appendChild(h4_2);
-    business.appendChild(busi);
-    utenze.appendChild(amici);
-    amici.appendChild(h4_3);
-    amici.appendChild(fri);
+    utenze.append(famiglia, business, amici);
+    famiglia.append(h4_1, fami);
+    business.append(h4_2, busi);
+    amici.append(h4_3, fri);
 
     famiglia.addEventListener('click', () => {
         i = 0;
@@ -343,20 +329,13 @@ function addCredit() {
     let p50 = document.createElement('p');
     p50.innerHTML = '50€';
 
-    phoneBody!.appendChild(back);
-    phoneBody!.appendChild(h5);
-    phoneBody!.appendChild(bottom);
-    bottom.appendChild(creditcard);
-    creditcard.appendChild(h3);
-    creditcard.appendChild(p);
-    bottom.appendChild(ricariche);
-    ricariche.appendChild(ric5);
+    phoneBody!.append(back, h5, bottom);
+    bottom.append(creditcard, ricariche);
+    creditcard.append(h3, p);
+    ricariche.append(ric5, ric10, ric20, ric50);
     ric5.appendChild(p5);
-    ricariche.appendChild(ric10);
     ric10.appendChild(p10);
-    ricariche.appendChild(ric20);
     ric20.appendChild(p20);
-    ricariche.appendChild(ric50);
     ric50.appendChild(p50);
 
     back.addEventListener('click', initialize);
