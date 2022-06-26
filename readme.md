@@ -16,9 +16,9 @@ L'app riproduce  utilizzando *Typescript* l'interfaccia di uno smartphone con co
 
 <br>
 
-### Schermata Utenti
+### Screenshot
 
-
+![ScreenSmartphoneInterface](https://user-images.githubusercontent.com/69992843/175811262-8e59748f-a47f-428f-a402-72236aa5b156.png)
 
 ### Dettagli 
 
